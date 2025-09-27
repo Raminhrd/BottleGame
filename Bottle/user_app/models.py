@@ -59,7 +59,7 @@ class FriendList(models.Model):
     friend = models.ManyToManyField(UserProfile)
 
     def __str__(self):
-        return f"{self.owner.user.username} is friend {self.friend}"
+        return f"{self.owner.user.first_name} is friend {self.friend}"
 
 
 class Notification(models.Model):

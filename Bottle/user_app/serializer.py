@@ -47,6 +47,9 @@ class MessagePurchaseSerializer(ModelSerializer):
 
 
 class FriendListCreateSerializer(ModelSerializer):
+    owner = StringRelatedField()
+    friend = StringRelatedField(many=True)
+
     class Meta:
         model = FriendList
         fields = '__all__' 

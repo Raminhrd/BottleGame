@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from rest_framework import permissions
 from rest_framework.response import Response
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, ListAPIView
 from rest_framework.views import APIView
 from user_app.serializer import *
 import random
@@ -78,7 +78,7 @@ class MessagePurcaseView(APIView):
 
     def post(self, request, pk):
         user = UserProfile.objects.get(user=request.user)
-        
+
         try:
             message = Message.objects.get(pk=pk)
             if MessagePurchase.objects.filter(user=user, message=message).exists():
@@ -92,14 +92,40 @@ class MessagePurcaseView(APIView):
 
     
 
-class FriendListView(ListCreateAPIView):
-    queryset = UserProfile.objects.all()
+class FriendListView(ListAPIView):
+    queryset = FriendList.objects.all()
     serializer_class = FriendListCreateSerializer
 
 
 class FriendDetailView(RetrieveUpdateDestroyAPIView):
-    queryset = UserProfile.objects.all()
+    queryset = FriendList.objects.all()
     serializer_class = FriendListRetrieveUpdateDetsroySerializer
+
+
+class AddFriendView(APIView):
+    permission_classes = [permissions.IsAuthenticated, IsNotBanUser]
+
+    def post(self, request, pk=None):
+        try:
+            user_profile = UserProfile.objects.get(user=request.user)
+            username = request.data.get("username")
+            if not username:
+                return Response({"error": "username is required"}, status=400)
+
+            friend = UserProfile.objects.get(user__username=username)
+            friend_list, created = FriendList.objects.get_or_create(owner=user_profile)
+            if friend_list.friend.filter(id=friend.id).exists():
+                return Response({"friend": friend.user.username, "msg": "Already in friend list"})
+            user_profile.pay_coin(30)
+            friend_list.friend.add(friend)
+            return Response({"friend": friend.user.username, "msg": "Friend added successfully"})
+
+        except UserProfile.DoesNotExist:
+            return Response({"error": "Friend not found"}, status=404)
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=400)
+
 
 
 class NotificationListView(ListCreateAPIView):

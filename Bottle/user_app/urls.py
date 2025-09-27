@@ -9,4 +9,6 @@ urlpatterns = [
     path('message-detail/<str:pk>', MessageDetailView.as_view()),
     path('sea-list', SeaListView.as_view()),
     path('message-purchase/<int:pk>', MessagePurcaseView.as_view()),
+    path('add-friend', AddFriendView.as_view()),
+    path('friend-list', FriendListView.as_view()),
 ]
