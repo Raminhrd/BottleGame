@@ -53,7 +53,6 @@ class MessagePurchase(models.Model):
     
 
 
-
 class FriendList(models.Model):
     owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='owner_friendlist')
     friend = models.ManyToManyField(UserProfile)

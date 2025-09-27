@@ -9,12 +9,6 @@ class UserProfileListSerializer(ModelSerializer):
         model = UserProfile
         fields = ['user', 'coins', 'is_active']
 
-    
-class UserProfileRetrieveUpdateDetsroyserializer(ModelSerializer):
-    class Meta:
-        model = UserProfile
-        fields = ['user', 'coins', 'is_active']
-
 
 class MessageListCreateSerializer(ModelSerializer):
     class Meta:
@@ -53,12 +47,6 @@ class FriendListCreateSerializer(ModelSerializer):
     class Meta:
         model = FriendList
         fields = '__all__' 
-
-
-class FriendListRetrieveUpdateDetsroySerializer(ModelSerializer):
-    class Meta: 
-        model = FriendList
-        fileds = '__all__'
 
 
 class NotificationList(ModelSerializer):

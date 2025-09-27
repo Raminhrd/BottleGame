@@ -16,18 +16,7 @@ class UserProfileView(ListCreateAPIView):
     permission_classes = [permissions.IsAdminUser]
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileListSerializer
-
-
-class UserProfileDetailView(RetrieveUpdateDestroyAPIView):
-    queryset = UserProfile.objects.all()
-    serializer_class = UserProfileRetrieveUpdateDetsroyserializer
-
-    def get_permissions(self):
-        
-        if self.request.method == 'DELETE':
-            return [permissions.IsAdminUser()]
-        return [permissions.IsAuthenticated()]
-
+            
 
 class MessageListView(ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated, IsNotBanUser]
@@ -91,15 +80,9 @@ class MessagePurcaseView(APIView):
             return Response({"error": str(e)}, status=400)
 
     
-
 class FriendListView(ListAPIView):
     queryset = FriendList.objects.all()
     serializer_class = FriendListCreateSerializer
-
-
-class FriendDetailView(RetrieveUpdateDestroyAPIView):
-    queryset = FriendList.objects.all()
-    serializer_class = FriendListRetrieveUpdateDetsroySerializer
 
 
 class AddFriendView(APIView):
@@ -125,8 +108,33 @@ class AddFriendView(APIView):
 
         except Exception as e:
             return Response({"error": str(e)}, status=400)
+        
 
+class RemoveFriend(APIView):
+    permission_classes = [permissions.IsAuthenticated, IsNotBanUser]
 
+    def post(self, request, pk=None):
+
+        try:
+            user_profile = UserProfile.objects.get(user=request.user)
+            username = request.data.get("username")
+            if not username:
+                return Response({"error": "username is required"}, status=400)
+            
+            friend = UserProfile.objects.get(user__username=username)
+            friend_remove = FriendList.objects.get(owner=user_profile)
+            if not friend_remove.friend.filter(id=friend.id).exists():
+                return Response({"friend": friend.user.username, "msg": "You Do Not Have This Friend  At list"})
+            
+            friend_remove.friend.remove(friend)
+            return Response({"friend": friend.user.username, "msg": "Friend remove successfully"})
+        
+        except UserProfile.DoesNotExist:
+            return Response({"error": "Friend not found"}, status=404)
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=400)
+        
 
 class NotificationListView(ListCreateAPIView):
     queryset = UserProfile.objects.all()
