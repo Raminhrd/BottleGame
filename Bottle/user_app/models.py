@@ -7,6 +7,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     coins = models.IntegerField(default=100)
     is_active = models.BooleanField(default=True)
+    is_ban = models.BooleanField(default=False)
 
     def __str__(self):
         if self.user.first_name:

@@ -7,6 +7,10 @@ from rest_framework.views import APIView
 from user_app.serializer import *
 import random
 from user_app.models import UserProfile, Sea
+from user_app.permissions import IsNotBanUser
+
+
+
 
 class UserProfileView(ListCreateAPIView):
     permission_classes = [permissions.IsAdminUser]
@@ -26,7 +30,7 @@ class UserProfileDetailView(RetrieveUpdateDestroyAPIView):
 
 
 class MessageListView(ListCreateAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsNotBanUser]
     queryset = Message.objects.all()
     serializer_class = MessageListCreateSerializer
 
@@ -43,10 +47,9 @@ class MessageListView(ListCreateAPIView):
             return Response(status=400, data=str(e))   
 
         
-
 class MessageDetailView(RetrieveUpdateDestroyAPIView):
     serializer_class = MesssageRetrieveUpdateDetsroySerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsNotBanUser]
     queryset = Message.objects.all()
 
     def get_queryset(self):
@@ -56,7 +59,7 @@ class MessageDetailView(RetrieveUpdateDestroyAPIView):
     
 
 class SeaListView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsNotBanUser]
 
     def get(self, request):
         user = UserProfile.objects.get(user=request.user)
