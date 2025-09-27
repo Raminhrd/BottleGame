@@ -41,6 +41,19 @@ class Sea(models.Model):
         return self.Message
 
 
+class MessagePurchase(models.Model):
+    user = models.ForeignKey(to=UserProfile, on_delete=models.CASCADE)
+    message = models.ForeignKey(to=Message, on_delete=models.CASCADE)
+    
+    class Meta :
+        unique_together = ("user", "message")
+
+    def __str__(self):
+        return f"{self.user} bought {self.message}"
+    
+
+
+
 class FriendList(models.Model):
     owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='owner_friendlist')
     friend = models.ManyToManyField(UserProfile)

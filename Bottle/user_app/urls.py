@@ -8,4 +8,5 @@ urlpatterns = [
     path('message', MessageListView.as_view()),
     path('message-detail/<str:pk>', MessageDetailView.as_view()),
     path('sea-list', SeaListView.as_view()),
+    path('message-purchase/<int:pk>', MessagePurcaseView.as_view()),
 ]

@@ -19,7 +19,7 @@ class UserProfileRetrieveUpdateDetsroyserializer(ModelSerializer):
 class MessageListCreateSerializer(ModelSerializer):
     class Meta:
         model = Message
-        fields  = ['receiver', 'text_message']
+        fields  = ['id', 'receiver', 'text_message']
 
 
 class MesssageRetrieveUpdateDetsroySerializer(ModelSerializer):
@@ -37,6 +37,12 @@ class SeaListCreateSerializer(ModelSerializer):
 class SeaListCreateRetrieveUpdateDetsroySerializer(ModelSerializer):
     class Meta:
         model = Sea
+        fields = '__all__'
+
+
+class MessagePurchaseSerializer(ModelSerializer):
+    class Meta:
+        model = MessagePurchase
         fields = '__all__'
 
 

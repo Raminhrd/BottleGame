@@ -73,6 +73,25 @@ class SeaListView(APIView):
         return Response(MessageListCreateSerializer(message).data)
     
 
+class MessagePurcaseView(APIView):
+    permission_classes = [permissions.IsAuthenticated, IsNotBanUser]
+
+    def post(self, request, pk):
+        user = UserProfile.objects.get(user=request.user)
+        
+        try:
+            message = Message.objects.get(pk=pk)
+            if MessagePurchase.objects.filter(user=user, message=message).exists():
+                return Response({"receiver": message.receiver.user.username})
+            user.pay_coin(30)
+            MessagePurchase.objects.create(user=user, message=message)
+            return Response({"receiver": message.receiver.user.username})
+        
+        except Exception as e:
+            return Response({"error": str(e)}, status=400)
+
+    
+
 class FriendListView(ListCreateAPIView):
     queryset = UserProfile.objects.all()
     serializer_class = FriendListCreateSerializer
