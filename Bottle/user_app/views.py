@@ -99,7 +99,7 @@ class AddFriendView(APIView):
             friend_list, created = FriendList.objects.get_or_create(owner=user_profile)
             if friend_list.friend.filter(id=friend.id).exists():
                 return Response({"friend": friend.user.username, "msg": "Already in friend list"})
-            user_profile.pay_coin(30)
+            user_profile.pay_coin(50)
             friend_list.friend.add(friend)
             return Response({"friend": friend.user.username, "msg": "Friend added successfully"})
 

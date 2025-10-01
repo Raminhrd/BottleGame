@@ -8,6 +8,7 @@ class UserProfile(models.Model):
     coins = models.IntegerField(default=100)
     is_active = models.BooleanField(default=True)
     is_ban = models.BooleanField(default=False)
+    ban_until = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         if self.user.first_name:
