@@ -1,4 +1,4 @@
-🍾 Bottle Game — Social Message Game API (Django REST Framework)
+🍾 Bottle Game Social Message Game API (Django REST Framework)
 
 A fun social messaging game built with Django REST Framework.
 Players send secret messages, collect random bottles, make friends, and use coins to unlock new features.
@@ -111,32 +111,6 @@ POST	/friends/remove/	Remove a friend	Authenticated
 POST	/admin/ban/	Ban, unban, or permanently ban a user	Admin
 🔐 Example Requests
 📩 Send a message
-{
-  "text_message": "Hello from the sea!"
-}
-
-🌊 Pick a random bottle
-
-Response:
-
-{
-  "id": 5,
-  "sender": "Anonymous",
-  "text_message": "Hey there!"
-}
-
-💰 Purchase sender info
-
-Response:
-
-{
-  "receiver": "ramin_user"
-}
-
-👯 Add a friend
-{
-  "username": "alex_dev"
-}
 
 🧰 Tech Stack
 Tool	Purpose
